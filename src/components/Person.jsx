@@ -60,11 +60,10 @@ export const Person = () => {
       [name]: name === "gender" ? value === "true" : value,
     }));
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
     formData.append("idPerson", selectedPerson.idPerson);
     formData.append("firstName", selectedPerson.firstName);
@@ -72,7 +71,7 @@ export const Person = () => {
     formData.append("dni", selectedPerson.dni);
     formData.append("gender", selectedPerson.gender);
     formData.append("birthDate", selectedPerson.birthDate);
-  
+
     console.log("Datos de selectedPerson:", selectedPerson);
 
     try {
@@ -81,9 +80,9 @@ export const Person = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       console.log("Respuesta de actualización:", response.data);
-  
+
       setDataPerson((prev) =>
         prev.map((person) =>
           person.idPerson === selectedPerson.idPerson ? selectedPerson : person
@@ -110,62 +109,64 @@ export const Person = () => {
       {loading ? (
         <p>Cargando datos...</p>
       ) : (
-        <table className="table table-success table-striped">
-          <thead>
-            <tr>
-              <th scope="col" className="text-center">
-                Nombre
-              </th>
-              <th scope="col" className="text-center">
-                Apellido
-              </th>
-              <th scope="col" className="text-center">
-                DNI
-              </th>
-              <th scope="col" className="text-center">
-                Género
-              </th>
-              <th scope="col" className="text-center">
-                F. Nacimiento
-              </th>
-              <th scope="col" className="text-center">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {dataPerson.map((person) => (
-              <tr key={person.idPerson}>
-                <td className="text-center">{person.firstName}</td>
-                <td className="text-center">{person.surName}</td>
-                <td className="text-center">{person.dni}</td>
-                <td className="text-center">
-                  {person.gender ? "Masculino" : "Femenino"}
-                </td>
-                <td className="text-center">
-                  {new Date(person.birthDate).toLocaleDateString()}
-                </td>
-                <td className="text-center">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    onClick={() => handleEdit(person)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteP(person.idPerson)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-success table-striped">
+            <thead>
+              <tr>
+                <th scope="col" className="text-center">
+                  Nombre
+                </th>
+                <th scope="col" className="text-center">
+                  Apellido
+                </th>
+                <th scope="col" className="text-center">
+                  DNI
+                </th>
+                <th scope="col" className="text-center">
+                  Género
+                </th>
+                <th scope="col" className="text-center">
+                  F. Nacimiento
+                </th>
+                <th scope="col" className="text-center">
+                  Acciones
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {dataPerson.map((person) => (
+                <tr key={person.idPerson}>
+                  <td className="text-center">{person.firstName}</td>
+                  <td className="text-center">{person.surName}</td>
+                  <td className="text-center">{person.dni}</td>
+                  <td className="text-center">
+                    {person.gender ? "Masculino" : "Femenino"}
+                  </td>
+                  <td className="text-center">
+                    {new Date(person.birthDate).toLocaleDateString()}
+                  </td>
+                  <td className="text-center">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={() => handleEdit(person)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => deleteP(person.idPerson)}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       <div

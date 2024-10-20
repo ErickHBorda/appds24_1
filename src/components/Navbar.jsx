@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 export const Navbar = ({ handleLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [username, setUsername] = useState('');
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -11,11 +12,23 @@ export const Navbar = ({ handleLogout }) => {
 
   useEffect(() => {
     // Obtener el objeto del usuario desde localStorage
-    const storedUser = localStorage.getItem('user'); // Asegúrate de que 'user' sea la clave correcta que usas para almacenar el objeto
+    const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
-      setUsername(user.nameUser); // Asigna el valor de nameUser al estado
+      setUsername(user.nameUser);
     }
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -36,7 +49,7 @@ export const Navbar = ({ handleLogout }) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink className="nav-link" to="/home">
                 Inicio
@@ -44,7 +57,7 @@ export const Navbar = ({ handleLogout }) => {
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/new-user">
-                Regitrar Persona
+                Registrar Persona
               </NavLink>
             </li>
             <li className="nav-item">
@@ -53,41 +66,44 @@ export const Navbar = ({ handleLogout }) => {
               </NavLink>
             </li>
           </ul>
-        </div>
-        <div className="nav-item dropdown">
-          <button
-            className="btn btn-link nav-link dropdown-toggle"
-            onClick={toggleDropdown}
-            aria-expanded={dropdownOpen}
-          >
-            <img
-              src="/user.png" // Cambia esta URL por la de la imagen de perfil del usuario
-              alt="User"
-              className="rounded-circle"
-              width="30"
-              height="30"
-            />
-          </button>
-          <ul
-            className={`dropdown-menu dropdown-menu-end ${
-              dropdownOpen ? "show" : ""
-            }`}
-            style={{ right: 0 }}
-          >
-            <li>
-              <button className="dropdown-item" onClick={handleLogout}>
-                Cerrar sesion
+          <div className="d-flex align-items-center">
+            {username && (
+              <span className="navbar-text me-3 text-primary">
+                {username}
+              </span>
+            )}
+            <div className="nav-item dropdown" ref={dropdownRef}>
+              <button
+                className="btn btn-link nav-link dropdown-toggle"
+                onClick={toggleDropdown}
+                aria-expanded={dropdownOpen}
+              >
+                <img
+                  src="/user.png"
+                  alt="User"
+                  className="rounded-circle"
+                  width="30"
+                  height="30"
+                />
               </button>
-            </li>
-            <div className="container"></div>
-          </ul>
-        </div>
-        <div>
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <span className="text-primary ">{username}</span>
-            </li>
-          </ul>
+              <ul
+                className={`dropdown-menu ${dropdownOpen ? "show" : ""} ${
+                  window.innerWidth < 768 ? "dropdown-menu-start" : "dropdown-menu-end"
+                }`}
+                style={{
+                  position: "absolute",
+                  right: window.innerWidth < 768 ? "auto" : 0,
+                  left: window.innerWidth < 768 ? 0 : "auto",
+                }}
+              >
+                <li>
+                  <button className="dropdown-item" onClick={handleLogout}>
+                    Cerrar sesión
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </nav>

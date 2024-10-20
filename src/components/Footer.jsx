@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 
 export const Footer = () => {
   return (
@@ -15,8 +14,12 @@ export const Footer = () => {
         }}
       >
         © 2024 [eHCode] | Esta pagina fue desarrollada con la intención de mejorar mis habilidades en el Desarrolo de Software🧑‍💻
-        <div style={{textAlign:"right", fontSize:"12px", position:"absolute"}}>Puede que al iniciar demore en cargar, se paciente🙂</div>
-        <div style={{textAlign:"end", fontSize:"12px"}}>Al salir de la página no olvides de cerrar la sesión.</div>
+        <p className="d-block d-md-none" style={{ fontSize: "12px" }}>
+          Puede que al iniciar demore en cargar, se paciente🙂
+        </p>
+        <p className="d-block d-md-none" style={{ fontSize: "12px" }}>
+          Al salir de la página no olvides cerrar la sesión.
+        </p>
       </div>
     </footer>
   );

@@ -40,7 +40,6 @@ export const App = () => {
             </>
           ) : (
             <>
-              <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
               <Route path="/new-user" element={<AddUser />} />
               <Route path="/clients" element={<Person/>}/>
